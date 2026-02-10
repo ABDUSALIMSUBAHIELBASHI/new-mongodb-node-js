@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Typography, Paper, TextField, Button, Box, IconButton, InputAdornment, Stack, Alert, Link, Container } from '@mui/material'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { useTranslation } from 'react-i18next'
@@ -14,6 +14,17 @@ export default function Signup() {
     email: '',
     password: '',
   })
+
+  // Clear form on component load and after render
+  useEffect(() => {
+    setFormData({ name: '', email: '', password: '' })
+    setShowPassword(false)
+    // Also clear after a brief delay to prevent password managers from refilling
+    const timer = setTimeout(() => {
+      setFormData({ name: '', email: '', password: '' })
+    }, 100)
+    return () => clearTimeout(timer)
+  }, [])
   const [errors, setErrors] = useState({})
   const [successMsg, setSuccessMsg] = useState('')
 
@@ -77,7 +88,7 @@ export default function Signup() {
 
         {successMsg && <Alert severity="success" sx={{ mb: 2 }}>{successMsg}</Alert>}
 
-        <Box component="form" sx={{ display: 'grid', gap: 2 }} onSubmit={handleSignup}>
+        <Box component="form" sx={{ display: 'grid', gap: 2 }} onSubmit={handleSignup} autoComplete="off">
           <TextField
             label={t('signup.full_name')}
             name="name"
@@ -86,6 +97,7 @@ export default function Signup() {
             error={!!errors.name}
             helperText={errors.name}
             fullWidth
+            autoComplete="name"
           />
           <TextField
             label={t('signup.email')}
@@ -96,6 +108,7 @@ export default function Signup() {
             error={!!errors.email}
             helperText={errors.email}
             fullWidth
+            autoComplete="email"
           />
           <TextField
             label={t('signup.password')}
@@ -106,6 +119,7 @@ export default function Signup() {
             error={!!errors.password}
             helperText={errors.password}
             fullWidth
+            autoComplete="new-password"
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">

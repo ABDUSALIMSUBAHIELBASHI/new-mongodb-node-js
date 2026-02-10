@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Typography, TextField, Button, Box, IconButton, InputAdornment, Link, Stack, Alert } from '@mui/material'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { useTranslation } from 'react-i18next'
@@ -10,6 +10,19 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+
+  // Clear form on component load and after render
+  useEffect(() => {
+    setEmail('')
+    setPassword('')
+    setShowPassword(false)
+    // Also clear after a brief delay to prevent password managers from refilling
+    const timer = setTimeout(() => {
+      setEmail('')
+      setPassword('')
+    }, 100)
+    return () => clearTimeout(timer)
+  }, [])
   const [errors, setErrors] = useState({})
   const [successMsg, setSuccessMsg] = useState('')
 
@@ -53,7 +66,7 @@ export default function Login() {
         
         {successMsg && <Alert severity="success" sx={{ mb: 2 }}>{successMsg}</Alert>}
         
-        <Stack spacing={2.5} component="form" onSubmit={handleLogin}>
+        <Stack spacing={2.5} component="form" onSubmit={handleLogin} autoComplete="off">
           <TextField
             fullWidth
             label={t('login.email')}
@@ -64,6 +77,7 @@ export default function Login() {
             helperText={errors.email}
             variant="filled"
             hiddenLabel
+            autoComplete="email"
           />
           <TextField
             fullWidth
@@ -74,6 +88,7 @@ export default function Login() {
             error={!!errors.password}
             helperText={errors.password}
             variant="filled"
+            autoComplete="new-password"
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">

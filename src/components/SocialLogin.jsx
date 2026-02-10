@@ -1,13 +1,12 @@
 import React from 'react'
 import { Box, Button, Divider, Typography, Stack } from '@mui/material'
-import { FaGoogle, FaGithub, FaFacebook, FaLinkedin } from 'react-icons/fa'
+import { FaGithub, FaFacebook, FaLinkedin } from 'react-icons/fa'
 import { useTranslation } from 'react-i18next'
 
 export default function SocialLogin() {
   const { t } = useTranslation()
 
   const socialLinks = {
-    google: 'https://accounts.google.com',
     github: 'https://github.com/login',
     facebook: 'https://www.facebook.com/login',
     linkedin: 'https://www.linkedin.com/login'
@@ -26,16 +25,7 @@ export default function SocialLogin() {
       </Divider>
 
       <Stack spacing={2}>
-        <Button
-          fullWidth
-          variant="outlined"
-          startIcon={<FaGoogle />}
-          onClick={() => handleSocialClick(socialLinks.google)}
-          sx={{ py: 1.2, textTransform: 'none', fontWeight: 500 }}
-        >
-          {t('social.google')}
-        </Button>
-
+        
         <Stack direction="row" spacing={1.5}>
           <Button
             fullWidth
